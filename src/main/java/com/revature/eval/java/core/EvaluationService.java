@@ -1,6 +1,8 @@
 package com.revature.eval.java.core;
 
 import java.time.temporal.Temporal;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +17,27 @@ public class EvaluationService {
 	 */
 	public String reverse(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		
+		//Character array to hold the reversed string.
+		char[] reversed = new char[string.length()];
+		
+		//Check if the string is empty or null
+		if (string == "" || string == null) {
+			return "";
+		}
+		int j = string.length()-1;	
+		//Loop to go through the strings characters and place them in reverse order in the new string
+		for(int i = 0; i < string.length();i++) {
+			
+			reversed[i] = string.charAt(j);
+			j--;
+			
+		}
+		
+		
+		String reversedString = new String(reversed);
+		
+		return reversedString;
 	}
 
 	/**
@@ -28,7 +50,35 @@ public class EvaluationService {
 	 */
 	public String acronym(String phrase) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		
+		//Trim phrase
+		phrase = phrase.trim();
+		
+		//String to hold the acronym and count for placement
+		char[] acro = new char[phrase.length()];
+		int acroCount = 1;
+		
+		//Check if phrase is null or empty
+		if(phrase == null || phrase == "") {
+			return "";
+		}
+		
+		//Set first letter of acronym as first letter of phrase
+		acro[0] = Character.toUpperCase(phrase.charAt(0));
+		
+		//Loop through the characters in the string
+		for(int i = 0; i < phrase.length();i++) {
+			//Loop to find space or dash
+			if(phrase.charAt(i) == ' ' || phrase.charAt(i) == '-') {
+				acro[acroCount] = Character.toUpperCase(phrase.charAt(i+1));
+				acroCount++;
+			}
+		}
+		
+		String acronym = new String(acro);
+		acronym = acronym.trim();
+		
+		return acronym;
 	}
 
 	/**
@@ -82,16 +132,34 @@ public class EvaluationService {
 
 		public boolean isEquilateral() {
 			// TODO Write an implementation for this method declaration
+			
+			//Check that all three sides are the same
+			if(this.sideOne == this.sideTwo && this.sideTwo == this.sideThree) {
+				return true;
+			}
+			
 			return false;
 		}
 
 		public boolean isIsosceles() {
 			// TODO Write an implementation for this method declaration
+			
+			//Check if any two sides are the same
+			if(this.sideOne == this.sideTwo || this.sideOne == this.sideThree || this.sideTwo == this.sideThree) {
+				return true;
+			}
+			
 			return false;
 		}
 
 		public boolean isScalene() {
 			// TODO Write an implementation for this method declaration
+			
+			//Check that no side is equivalent
+			if(this.sideOne != this.sideTwo && this.sideOne != this.sideThree && this.sideTwo != this.sideThree) {
+				return true;
+			}
+			
 			return false;
 		}
 
@@ -114,7 +182,47 @@ public class EvaluationService {
 	 */
 	public int getScrabbleScore(String string) {
 		// TODO Write an implementation for this method declaration
-		return 0;
+		
+		//Score variable
+		int score = 0;
+		
+		//Check that string is not null or empty
+		if(string == "" || string == null) {
+			return 0;
+		}
+		
+		//Uppercase the entire string
+		String string2 = string.toUpperCase();
+		
+		
+		//Remove all non letters from string
+		string2 = string.replaceAll("[^A-Za-z]+", "");
+		
+		//Strings for one points
+		String pointsOne = string2.replaceAll("[^AEIOULNRSTaeioulnrst]+", "");
+		
+		//Strings for Two points
+		String pointsTwo = string2.replaceAll("[^DGdg]+", "");
+		
+		//Strings for Three points
+		String pointsThree = string2.replaceAll("[^BCMPbcmp]+", "");
+		
+		//Strings for Four points
+		String pointsFour = string2.replaceAll("[^FHVWYfhvwy]+", "");
+		
+		//Strings for Five points
+		String pointsFive = string2.replaceAll("[^Kk]+", "");
+		
+		//Strings for Eight points
+		String pointsEight = string2.replaceAll("[^JXjx]+", "");
+		
+		//Strings for Ten points
+		String pointsTen = string2.replaceAll("[^QZqz]+", "");
+		
+		//Calculate count
+		score = 1*pointsOne.length() + 2*pointsTwo.length() + 3*pointsThree.length() + 4*pointsFour.length() + 5*pointsFive.length() + 8*pointsEight.length() + 10*pointsTen.length();
+		
+		return score;
 	}
 
 	/**
@@ -148,9 +256,30 @@ public class EvaluationService {
 	 * Note: As this exercise only deals with telephone numbers used in
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
-	public String cleanPhoneNumber(String string) {
+	public String cleanPhoneNumber(String string) throws IllegalArgumentException{
 		// TODO Write an implementation for this method declaration
-		return null;
+		
+		//Test if string is null or empty
+		if(string == null || string == "") {
+			return "";
+		}
+		
+		String number = string.replaceAll("[ ()-.]", "");
+		//System.out.println(number);
+		
+		//Check if the number contains an illegal characters
+		try {
+			Long num = Long.parseLong(number);
+		}catch(NumberFormatException e) {
+			throw new IllegalArgumentException();
+		}
+		
+		//Check if the length of the number is to long
+		if(number.length() > 11) {
+			throw new IllegalArgumentException();
+		}
+		
+		return number;
 	}
 
 	/**
@@ -164,7 +293,46 @@ public class EvaluationService {
 	 */
 	public Map<String, Integer> wordCount(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		
+		//Check if string is null or empty
+		if(string == null || string == "") {
+			return null;
+		}
+		
+		//Results of Count
+		Map<String, Integer> results = new HashMap<>();
+		
+		//Split the phrase at the spaces
+		string = string.replaceAll(","," ");
+		String phrase[] = string.split(" ");
+		
+		//Counting variable
+		int count = 1;
+		
+		//Loop to check word counts
+		for(int i = 0; i< phrase.length; i++) {
+			for(int j = 0; j < phrase.length; j++) {
+
+				//Dont check the same work against itself
+				if(i != j) {
+					
+					//Remove all non letters from string
+					phrase[i] = phrase[i].replaceAll("[^A-Za-z]+", "");
+					phrase[j] = phrase[j].replaceAll("[^A-Za-z]+", "");
+					
+					//If they are equal increment count
+					if(phrase[i].equals(phrase[j])) {
+						count++;
+					}
+				}
+			}
+			
+			//Append the string and count to Map and then reset count
+			results.put(phrase[i], count);
+			count = 1;
+		}
+		
+		return results;
 	}
 
 	/**
@@ -207,7 +375,44 @@ public class EvaluationService {
 
 		public int indexOf(T t) {
 			// TODO Write an implementation for this method declaration
-			return 0;
+			
+			//Range between a and b for the index
+			int a = 0;
+			int b = sortedList.size()-1;
+			
+			//Toggle boolean to toggle the while loop
+			boolean toggle = true;
+			
+			while(toggle) {
+				
+				//Check if the first or last match or middle
+				if(t.equals(sortedList.get(a))){
+					return a;
+				}else if(t.equals(sortedList.get(b))) {
+					return b;
+				}else if(t.equals(sortedList.get((b-a)/2+ a))) {
+					return (b-a)/2 + a;
+				}
+				
+				//If it is not the middle find out if its in upper or lower half.
+				//Convert t and value at middle into integers
+				int find = (Integer) t;
+				int middle = (Integer) sortedList.get((b-a)/2+a);
+				
+				if(find < middle) {
+					b = (b-a)/2 + a;
+				}else {
+					a = (b-a)/2 + a;
+				}
+				
+				//end loop if range between a and b is ever less than 3
+				if((b-a)/2 + a < 1) {
+					toggle = false;
+				}
+				
+				
+			}
+			return -1;
 		}
 
 		public BinarySearch(List<T> sortedList) {
@@ -243,9 +448,39 @@ public class EvaluationService {
 	 */
 	public boolean isArmstrongNumber(int input) {
 		// TODO Write an implementation for this method declaration
+		//power of the 10 mod
+		//Digit count
+		int count = 1;
+		
+		//Array list to hold all individual digits
+		List<Integer> digits = new ArrayList<Integer>();
+		
+		//Variable to hold temp divided number
+		int div = input;
+		
+		//Sum of numbers
+		int sum = 0;
+		
+		//Loop through and get modulus and remaining numbers
+		while(div >= 1) {
+			digits.add(div%10);
+			div = div/10;
+			count++;
+		}
+		
+		//sum of numbers to correct power through loop
+		for(int i = 0; i<count-1;i++) {
+			sum = (int) (sum + Math.pow(digits.get(i), count-1));
+		}
+		
+		if(input == sum) {
+			return true;
+		}
+		
 		return false;
 	}
 
+	
 	/**
 	 * 9. Determine if a sentence is a pangram. A pangram (Greek: παν γράμμα, pan
 	 * gramma, "every letter") is a sentence using every letter of the alphabet at
@@ -260,8 +495,31 @@ public class EvaluationService {
 	 * @return
 	 */
 	public boolean isPangram(String string) {
-		// TODO Write an implementation for this method declaration
-		return false;
+		
+		//New capString to capitalize the new string
+		String capString = string.toUpperCase();
+		
+		//Replace all but the characters in the string
+		capString = capString.replaceAll("[^A-Z]+", "");
+		
+		//Toggle array to determine which letters are present in the string and which are not
+		boolean[] letters = new boolean[26];
+		int index = 0;
+		
+		//Loop through the string and determine which letter and its index in letters pertain to it
+		for(int i = 0; i < capString.length(); i++) {
+			index = capString.charAt(i) - 'A';
+			letters[index] = true;			
+		}
+		
+		//Check that all toggles in the array are true
+		for(int i = 0; i<26; i++) {
+			if(letters[i] == false) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 
 	
@@ -300,8 +558,50 @@ public class EvaluationService {
 		}
 
 		public String rotate(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			
+			//Buffer to hold the new string
+			StringBuffer cipher = new StringBuffer();
+			
+			//An array of the alphabet in order
+			char[] alpha = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
+			
+			//Index of the current letter in alphabet
+			int alphaIndex;
+			
+			//Count for while loop
+			int count = 0;
+			
+			//Loop to go through the string letter by letter to replace
+			for(int i=0; i<string.length(); i++) {
+				
+				
+				//Check if the current digit is a letter
+				if(Character.isLetter(string.charAt(i))) {
+					//Loop through the alpha to find the index in the current alphabet
+					while(string.toLowerCase().charAt(i) != alpha[count]) {
+						count++;
+					}
+					
+					//Modify the index number by the key.
+					alphaIndex = (count + this.key)%26;
+					
+					//check if the letter was capitalized initally
+					if(Character.isUpperCase(string.charAt(i))) {
+						cipher.append(Character.toUpperCase(alpha[alphaIndex]));
+					}else {
+						cipher.append(alpha[alphaIndex]);
+					}
+					
+					
+					count = 0;
+					
+				}else {
+					//Add the none alphabetic character to the cipher
+					cipher.append(string.charAt(i));
+				}
+			}
+			
+			return cipher.toString();
 		}
 
 	}
@@ -333,6 +633,14 @@ public class EvaluationService {
 	 */
 	static class AtbashCipher {
 
+		// Forward alphabet
+		private static char[] alpha = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
+								
+		// Reverse alphabet
+		private static char[] revAlpha = {'z','y','x','w','v','u','t','s','r','q','p','o','n','m','l','k','j','i','h','g','f','e','d','c','b','a'};
+
+		
+		
 		/**
 		 * Question 11
 		 * 
@@ -340,8 +648,55 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String encode(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			//a string buffer to handle to cipher
+			StringBuilder cipher = new StringBuilder();
+			
+			System.out.println("\n encode ");
+			System.out.println(string);
+			
+			//Formated encoded string to have only letters
+			String encodingString = string.replaceAll("[^A-Za-z0-9]+", "");
+			
+			//Lower case the entire string
+			encodingString = encodingString.toLowerCase();
+				
+			//Counting indexer
+			int count = 0;
+			
+			//Loop through the string
+			for(int i=0; i<encodingString.length(); i++) {
+				
+					//Check if its a letter
+					if(Character.isLetter(encodingString.charAt(i))) {
+					
+						//Loop through the alpha to find the index in the current alphabet
+						while(encodingString.charAt(i) != alpha[count]) {
+							count++;
+						}
+						
+						//Check if 5 characters have been done
+						if(i%5 == 0 && i != 0) {
+							cipher.append(' ');
+						}
+						
+						cipher.append(revAlpha[count]);
+						count = 0;
+					}else {
+						
+						//Check if 5 characters have been done
+						if(i%5 == 0 && i != 0) {
+							cipher.append(' ');
+						}
+						
+						cipher.append(encodingString.charAt(i));
+					}
+			}
+			
+			
+			System.out.println(cipher);
+			
+			
+			return cipher.toString();
 		}
 
 		/**
@@ -351,8 +706,41 @@ public class EvaluationService {
 		 * @return
 		 */
 		public static String decode(String string) {
-			// TODO Write an implementation for this method declaration
-			return null;
+			//a string buffer to handle to decoded message
+			StringBuilder decoded = new StringBuilder();
+			
+			System.out.println("\n decode ");
+			System.out.println(string);
+			
+			//Formated encoded string to have only letters
+			String decodingString = string.replaceAll("[^A-Za-z0-9]+", "");
+			
+			//Count iterator 
+			int count = 0;
+			
+			//Loop through the string
+			for(int i=0; i<decodingString.length(); i++) {
+				
+				//Check if its a letter
+				if(Character.isLetter(decodingString.charAt(i))) {
+				
+					//Loop through the alpha to find the index in the current alphabet
+					while(decodingString.charAt(i) != revAlpha[count]) {
+						count++;
+					}
+					
+					decoded.append(alpha[count]);
+					count = 0;
+					
+				}else {
+					
+					decoded.append(decodingString.charAt(i));
+				}
+			}
+
+			System.out.println(decoded);
+			
+			return decoded.toString();
 		}
 	}
 

@@ -280,8 +280,7 @@ public class EvaluationServiceTest {
 
 	@Test
 	public void findsAValueInAnArrayOfOddLength() {
-		List<Integer> sortedListOfOddLength = Collections
-				.unmodifiableList(Arrays.asList(1, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 634));
+		List<Integer> sortedListOfOddLength = Collections.unmodifiableList(Arrays.asList(1, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 634));
 
 		EvaluationService.BinarySearch<Integer> search = new EvaluationService.BinarySearch<>(sortedListOfOddLength);
 
